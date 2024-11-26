@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+
 const PORT = 1245;
 const HOST = 'localhost';
 const app = http.createServer();
@@ -23,6 +24,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           0,
           dbFieldNames.length - 1
         );
+
         for (const line of fileLines.slice(1)) {
           const studentRecord = line.split(',');
           const studentPropValues = studentRecord.slice(
@@ -39,6 +41,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           ]);
           studentGroups[field].push(Object.fromEntries(studentEntries));
         }
+
         const totalStudents = Object.values(studentGroups).reduce(
           (pre, cur) => (pre || []).length + cur.length
         );
@@ -61,6 +64,7 @@ const SERVER_ROUTE_HANDLERS = [
     route: '/',
     handler (_, res) {
       const responseText = 'Hello Holberton School!';
+
       res.setHeader('Content-Type', 'text/plain');
       res.setHeader('Content-Length', responseText.length);
       res.statusCode = 200;
@@ -71,6 +75,7 @@ const SERVER_ROUTE_HANDLERS = [
     route: '/students',
     handler (_, res) {
       const responseParts = ['This is the list of our students'];
+
       countStudents(DB_FILE)
         .then((report) => {
           responseParts.push(report);
