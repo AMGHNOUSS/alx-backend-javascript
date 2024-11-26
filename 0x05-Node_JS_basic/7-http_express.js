@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-
 const app = express();
 const PORT = 1245;
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
@@ -23,7 +22,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           0,
           dbFieldNames.length - 1
         );
-
         for (const line of fileLines.slice(1)) {
           const studentRecord = line.split(',');
           const studentPropValues = studentRecord.slice(
@@ -40,7 +38,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           ]);
           studentGroups[field].push(Object.fromEntries(studentEntries));
         }
-
         const totalStudents = Object.values(studentGroups).reduce(
           (pre, cur) => (pre || []).length + cur.length
         );
@@ -64,7 +61,6 @@ app.get('/', (_, res) => {
 
 app.get('/students', (_, res) => {
   const responseParts = ['This is the list of our students'];
-
   countStudents(DB_FILE)
     .then((report) => {
       responseParts.push(report);
